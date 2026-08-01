@@ -1,1 +1,5 @@
-data/resume_data.csv 
+data/resume_data.csv
+__pycache__/
+*.pyc
+.venv/
+.DS_Store

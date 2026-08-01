@@ -5,7 +5,15 @@ from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
 import sys
 import os
-sys.path.append(os.path.join(os.path.dirname(__file__), '..', 'src'))
+
+# ── Dynamic Path Resolution ───────────────────────────────────
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+SRC_DIR  = os.path.join(BASE_DIR, 'src')
+DATA_DIR = os.path.join(BASE_DIR, 'data')
+
+if SRC_DIR not in sys.path:
+    sys.path.append(SRC_DIR)
+
 from preprocessing import clean_text
 
 # ── Page Config ───────────────────────────────────────────────
@@ -14,12 +22,13 @@ st.set_page_config(
     page_icon  = "🎯",
     layout     = "wide"
 )
+
 # ── Load Data ─────────────────────────────────────────────────
 @st.cache_data
 def load_data():
-    resumes = pd.read_csv('data/resumes_db.csv')
-    jobs    = pd.read_csv('data/jobs_db.csv')
-    scores  = pd.read_csv('data/match_scores.csv')
+    resumes = pd.read_csv(os.path.join(DATA_DIR, 'resumes_db.csv'))
+    jobs    = pd.read_csv(os.path.join(DATA_DIR, 'jobs_db.csv'))
+    scores  = pd.read_csv(os.path.join(DATA_DIR, 'match_scores.csv'))
     return resumes, jobs, scores
 
 resumes_df, jobs_df, scores_df = load_data()
